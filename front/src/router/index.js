@@ -19,15 +19,30 @@ const routes = [
   },
   {
     meta: { requiresAuth: true },
-    path: '/post',
-    name: 'Post',
-    component: () => import('../views/Post.vue')
+    path: '/post/create',
+    name: 'PostCreate',
+    component: () => import('../views/PostCreate.vue')
   },
   {
     meta: { requiresAuth: true },
-    path: '/post',
-    name: 'Postid',
-    component: () => import('../views/Postid.vue')
+    props: (route) => {
+      const id = Number.parseInt(route.params.id, 10)
+      if (Number.isNaN(id)) {
+        return 0
+      }
+      return { id }
+    },
+    path: '/post/:id', component: () => import('../views/Post.vue'),
+    children: [
+      {
+        path: 'edit',
+        component: () => import('../components/EditPost.vue'),
+      },
+      {
+        path: '',
+        component: () => import('../components/ViewPost.vue'),
+      }
+    ]
   },
   {
     meta: { requiresAuth: true },
@@ -42,6 +57,7 @@ const routes = [
     component: Signup,
   },
   {
+    meta: { requiresAuth: false },
     path: '*',
     redirect: { name: 'Signup' }
   }

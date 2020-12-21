@@ -11,7 +11,8 @@ export default {
                 if (response.data.status === "fail") {
                     return false
                 }
-                commit('SET_USER', response.data);
+                commit('SET_USER', response.data.user);
+                commit('SET_TOKEN', response.data.token)
                 return dispatch('setHeader')
                     .then(() => setTimeout(() => router.push('home'), 2000))
             })
@@ -22,6 +23,7 @@ export default {
     },
     logoutUser({ commit }) {
         commit('SET_USER', null)
+        commit('SET_TOKEN', null)
         router.push('login')
     },
     setHeader({ state, getters }) {
@@ -38,5 +40,23 @@ export default {
                 'Content-Type': 'multipart/form-data'
             }
         })
-    }
+    },
+    fetchPosts({ commit }, limit = 10) {
+        HTTP.get("/api/post", { limit })
+            .then((response) => {
+                commit("SET_POSTS", response.data.posts)
+                if (response.data.posts.length > 0) {
+                    document.getElementById("empty").remove()
+                }
+            })
+            .catch(e => e)
+    },
+    fetchPost({ commit }, id) {
+        HTTP.get("/api/post/" + id)
+            .then((response) => {
+                console.log(response.data)
+                commit("PUSH_POST", response.data.post)
+            })
+            .catch(e => e)
+    },
 }

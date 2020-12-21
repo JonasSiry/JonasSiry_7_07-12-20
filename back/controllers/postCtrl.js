@@ -6,6 +6,7 @@ exports.createPost = (req, res, next) => {
     if (req.file) {
         postObject["imageUrl"] = req.file.filename
     }
+    postObject["UserId"] = req.locals.userId
     const newPost = Post.build(postObject)
     newPost.save()
         .then(() => res.status(201).json({ message: "Post enregistré !" }))
@@ -47,12 +48,12 @@ exports.deletePost = (req, res, next) => {
 
 exports.getOnePost = (req, res, next) => {
     Post.findByPk(req.params.id)
-        .then(post => res.status(200).json(post))
+        .then(post => res.status(200).json({post}))
         .catch(() => res.status(404).json({ message: "Oops ! Une erreur est survenue !" }))
 }
 
 exports.getPost = (req, res, next) => {
-    Post.findAll()
-        .then(post => res.status(200).json(post))
+    Post.findAll({ limit: req.params.limit })
+        .then(posts => res.status(200).json({posts}))
         .catch(() => res.status(400).json({ message: "Oops ! Une erreur est survenue !" }))
 }

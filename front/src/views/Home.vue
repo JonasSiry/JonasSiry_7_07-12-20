@@ -1,16 +1,27 @@
 <template>
   <div class="home">
     <Home />
-    <a id="post">
-      <img id="image" />
-      <div id="title"></div>
-      <div id="description"></div>
-    </a>
+    <div id="empty">Il n'y a pas encore de posts !</div>
+    <div class="getposts" v-for="post in posts" :key="post.id">
+      <router-link class="post" :to="'/post/' + post.id">
+        <img
+          class="imagepost"
+          v-if="post.imageUrl"
+          :src="getImageUrl(post.imageUrl)"
+        />
+        <div class="title">
+          {{ post.title }}
+        </div>
+        <div class="desc">
+          {{ post.description }}
+        </div>
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import Home from "@/components/Home_Post.vue";
 export default {
   name: "getPost",
@@ -18,43 +29,56 @@ export default {
     Home,
   },
   methods: {
-    getPost() {
-      let posts = this.getData();
-      posts.forEach((post) => {
-        let postLink = document.getElementById("post");
-        postLink.setAttribute("href", "Home?id=" + post.id);
-
-        let image = document.getElementById("image");
-        image.setAttribute("src", post.picture);
-
-        let title = document.getElementById("title");
-        title.textContent = post.title;
-
-        let description = document.getElementById("description");
-        description.textContent = post.description;
-      });
-    },
+    ...mapActions(["fetchPosts"]),
   },
-  ...mapActions(["getData"]),
+  computed: {
+    ...mapState(["posts"]),
+    ...mapGetters(["getImageUrl"]),
+  },
+  created() {
+    this.fetchPosts();
+  },
 };
 </script>
 
 <style lang="scss">
 $colormain: #05387a;
 
-#post {
+.getposts {
+  text-align: center;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  border: 3px solid $colormain;
-  & #image {
-    height: 30rem;
-    width: auto;
+  justify-content: center;
+  .post {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid $colormain;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    color: $colormain;
+    background: white;
+    & .imagepost {
+      width: 15rem;
+      height: auto;
+      border-bottom: 3px solid $colormain;
+    }
+    & .title {
+      color: darken($colormain, 10%);
+      font-size: 2rem;
+      text-decoration: underline;
+      margin-bottom: 1rem;
+      margin-top:1rem;
+    }
+    & .desc {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
   }
-  & #title {
-    font-size: 2rem;
-  }
-  & #description {
-    font-size: 1.5rem;
-  }
+}
+
+#empty {
+  font-size: 2rem;
+  color: $colormain;
+  margin-bottom:2rem;
 }
 </style>

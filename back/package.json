@@ -18,7 +18,9 @@
     "js-data": "^3.0.9",
     "jsonwebtoken": "^8.5.1",
     "mssql": "^6.2.3",
+    "multer": "^1.4.2",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.6",
     "sequelize": "^6.3.5",
     "uuid": "^8.3.2",
     "validatorjs": "^3.22.1"

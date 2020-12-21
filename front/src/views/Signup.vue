@@ -162,6 +162,7 @@ $colormain: #05387a;
       font-family: "Roboto", cursive, arial, sans-serif;
       border: 2px solid $colormain;
       cursor: pointer;
+      margin-bottom: 2rem;
       &:focus {
         outline: none;
       }

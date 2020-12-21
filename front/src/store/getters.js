@@ -1,3 +1,5 @@
+import { HTTP } from '@/httpconstant'
+
 export default {
     checkError: () => (inputs, checkPassword = true) => {
         let check = false;
@@ -30,5 +32,9 @@ export default {
         }
         return check;
     },
-    loggedIn: (state) => (!!state.token)
+    loggedIn: (state) => (!!state.token),
+    getImageUrl: () => (imageUrl) => {
+        return HTTP.defaults.baseURL + "static/" +imageUrl;
+    },
+    getPostById: (state) => (id) => state.posts.find(post => post.id === id)
 }

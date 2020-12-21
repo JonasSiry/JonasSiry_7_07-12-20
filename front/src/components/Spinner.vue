@@ -23,6 +23,7 @@ $colormain: #05387a;
   position: relative;
   left: 50%;
   animation: sk-chase 2.5s infinite linear both;
+  margin-bottom: 3rem;
 }
 
 .sk-chase-dot {

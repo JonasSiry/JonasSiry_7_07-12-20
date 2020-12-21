@@ -8,7 +8,7 @@
     </div>
     <div id="nav">
       <router-link to="/home">Accueil</router-link>
-      <router-link to="/post">Nouveau Post</router-link>
+      <router-link to="/post/create">Nouveau Post</router-link>
     </div>
   </div>
 </template>

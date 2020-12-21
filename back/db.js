@@ -26,22 +26,21 @@ Post.belongsTo(User)
 
 
 sequelize.sync()
-    .then(() => {
-        console.log(`Database & tables created!`)
-    });
+    .then(async () => {
+        try {
+            await User.findOrCreate({
+                where: { email: "admin@admin.com" },
+                defaults: {
+                    firstName: "Jonas", lastName: "Siry", email: "admin@admin.com", password: "$2b$10$Ug5uLcx6J12hkGP0k6G/KOean6bXLB3Yk9hS6/Xy5ybWetzB7sQwa"
+                }
+            })
+            console.log(`Database & tables created!`)
+        } catch (error) {
+            console.error('Unable to create admin', error);
+        }
+    })
 
-(async () => {
-    try {
-        await User.findOrCreate({
-            where: { email: "admin@admin.com" },
-            defaults: {
-                firstName: "Jonas", lastName: "Siry", email: "admin@admin.com", password: "$2b$10$Ug5uLcx6J12hkGP0k6G/KOean6bXLB3Yk9hS6/Xy5ybWetzB7sQwa"
-            }
-        })
-    } catch (error) {
-        console.error('Unable to create admin', error);
-    }
-})()
+
 
 module.exports = { User, Post, Com }
 

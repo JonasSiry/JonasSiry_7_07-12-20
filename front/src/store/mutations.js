@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const emptyUser = {
     email: "",
     firstName: "",
@@ -7,10 +9,21 @@ const emptyUser = {
 export default {
     SET_USER: (state, data) => {
         if (data) {
-            Object.assign(state, data)
+            Vue.set(state, "user", data)
         }
         else {
-            Object.assign(state, { token: null, user: emptyUser })
+            Vue.set(state, "user", emptyUser)
         }
+    },
+    SET_TOKEN: (state, token) => {
+        state.token = token
+    },
+    SET_POSTS: (state, posts) => {
+        if (posts)
+            Vue.set(state, "posts", posts)
+    },
+    PUSH_POST: (state, postToPush) => {
+        if (!state.posts.find(post => post.id === postToPush.id))
+            state.posts.push(postToPush)
     },
 }
