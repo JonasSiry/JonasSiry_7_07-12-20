@@ -3,13 +3,13 @@ const { Post, User, Com } = require("../db")
 
 const userInclude = {
     model: User,
-    attributes: ['firstName', 'lastName', 'email', 'id']
+    attributes: ['firstName', 'lastName', 'email', 'id', 'admin']
 }
 const comInclude = {
     model: Com,
     as: 'Coms',
     attributes: ['text', 'createdAt', 'updatedAt', 'id'],
-    include: [{ ...userInclude }], // clone pour ne pas linker l'élément
+    include: [{ ...userInclude }]
 }
 
 exports.createPost = (req, res, next) => {
@@ -29,7 +29,7 @@ exports.createPost = (req, res, next) => {
 exports.modifyPost = (req, res, next) => {
     Post.findByPk(req.params.id)
         .then((postToUpdate) => {
-            if (req.locals.userId != postToUpdate.UserId)
+            if (req.locals.userId != postToUpdate.UserId && req.locals.admin != true)
                 return res.status(401).json({ message: "Non non petit hacker !" })
             if (req.file) {
                 fs.unlinkSync(`images/${postToUpdate.imageUrl}`)
@@ -46,7 +46,7 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
     Post.findByPk(req.params.id)
         .then(post => {
-            if (req.locals.userId != post.UserId)
+            if (req.locals.userId != post.UserId && req.locals.admin != true)
                 return res.status(401).json({ message: "Non non petit hacker !" })
             fs.unlink(`images/${post.imageUrl}`, () => {
                 Post.destroy({
@@ -71,7 +71,7 @@ exports.getPost = (req, res, next) => {
     let offset = req.query.offset ? parseInt(req.query.offset) : 0;
     let limit = req.query.limit ? parseInt(req.query.limit) : 5;
     Post.count().then((count) => {
-        Post.findAll({ limit, offset, include: [userInclude, comInclude], order: [['Coms', 'createdAt', 'ASC']], })
+        Post.findAll({ limit, offset })
             .then(posts => res.status(200).json({ posts, count }))
     })
         .catch((e) => {

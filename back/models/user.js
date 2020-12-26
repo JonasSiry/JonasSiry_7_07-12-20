@@ -16,6 +16,10 @@ module.exports = (db, type) => {
     password: {
       type: type.STRING(100),
       allowNull: false
+    },
+    admin: {
+      type: type.BOOLEAN,
+      allowNull:true,
     }
   }, {
   })

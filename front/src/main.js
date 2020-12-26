@@ -17,16 +17,17 @@ new Vue({
   render: h => h(App),
   beforeCreate() {
     this.$store.dispatch('setHeader')
+    this.$store.dispatch('checkIfStillLoggedIn')
     router.beforeEach((to, from, next) => {
       if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!this.$store.getters.loggedIn) {
           next({ path: '/login' })
         } else {
+          this.$store.dispatch('checkIfStillLoggedIn')
           next()
         }
       } else {
         if (this.$store.getters.loggedIn) {
-          this.$store.dispatch('checkIfStillLoggedIn')
           next({ path: '/home' })
         } else {
           next()

@@ -4,7 +4,7 @@
       <div class="post">
         <div class="title">
           <span class="text">{{ post.title }}</span>
-          <span class="actions" v-if="post.UserId === user.id">
+          <span class="actions" v-if="post.UserId === user.id || user.admin == true">
             <router-link :to="'/post/' + post.id + '/edit'">
               <font-awesome-icon class="editpost" icon="edit" />
             </router-link>

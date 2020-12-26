@@ -3,7 +3,8 @@ import Vue from 'vue'
 const emptyUser = {
     email: "",
     firstName: "",
-    lastName: ""
+    lastName: "",
+    admin:false
 }
 
 export default {

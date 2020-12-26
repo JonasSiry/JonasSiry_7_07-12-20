@@ -38,12 +38,16 @@ exports.login = (req, res, next) => {
                             email: user.email,
                             firstName: user.firstName,
                             lastName: user.lastName,
-                            id: user.id
+                            id: user.id,
+                            admin: user.admin
                         },
                         token: jwt.sign(
-                            { userId: user.id },
+                            {
+                                userId: user.id,
+                                admin: user.admin
+                            },
                             process.env.APP_SECRET,
-                            { expiresIn: "24h" }
+                            { expiresIn: "10s" }
                         )
                     })
                 })

@@ -37,7 +37,7 @@ sequelize.sync()
             await User.findOrCreate({
                 where: { email: "admin@admin.com" },
                 defaults: {
-                    firstName: "Jonas", lastName: "Siry", email: "admin@admin.com", password: "$2b$10$Ug5uLcx6J12hkGP0k6G/KOean6bXLB3Yk9hS6/Xy5ybWetzB7sQwa"
+                    firstName: "Jonas", lastName: "Siry", email: "admin@admin.com", password: "$2b$10$Ug5uLcx6J12hkGP0k6G/KOean6bXLB3Yk9hS6/Xy5ybWetzB7sQwa", admin:true,
                 }
             })
             console.log(`Database & tables created!`)

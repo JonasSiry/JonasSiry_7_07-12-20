@@ -2,7 +2,7 @@
   <div class="comment">
     <div class="title">
       <span class="text">{{ authorName(comment.User) }} dit : </span>
-      <span class="actions" v-if="comment.User.id === user.id">
+      <span class="actions" v-if="comment.User.id === user.id || user.admin == true">
         <font-awesome-icon
           class="editpost"
           @click="editComment"

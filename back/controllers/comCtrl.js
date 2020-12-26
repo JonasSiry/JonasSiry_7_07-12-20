@@ -15,8 +15,8 @@ exports.createCom = (req, res, next) => {
 exports.modifyCom = (req, res, next) => {
     Com.findByPk(req.params.id)
         .then((comToUpdate) => {
-            if (req.locals.userId != comToUpdate.UserId)
-                return res.status(401).json({ message: "Tu va te faire bouillave" })
+            if (req.locals.userId != comToUpdate.UserId && req.locals.admin != true)
+                return res.status(401).json({ message: "Non non petit hacker !" })
 
             comToUpdate.text = req.body.text
             comToUpdate.save()
@@ -28,14 +28,15 @@ exports.modifyCom = (req, res, next) => {
 }
 
 exports.deleteCom = (req, res, next) => {
-    Com.destroy({
-        where: {
-            id: parseInt(req.params.id),
-            UserId: req.locals.userId,
-        }
-    })
-        .then(() => res.status(200).json({ message: "Commentaire supprimé !" }))
-        .catch(error => res.status(400).json({ error }))
+    Com.findByPk(req.params.id)
+        .then(comToDelete => {
+            if (req.locals.userId != comToDelete.UserId && req.locals.admin != true)
+                return res.status(401).json({ message: "Non non petit hacker !" })
+            comToDelete.destroy()
+                .then(() => res.status(200).json({ message: "Commentaire supprimé !" }))
+                .catch(error => res.status(400).json({ error }))
+        })
+        .catch(() => res.status(400).json({ message: "Oops ! Une erreur est survenue !" }))
 }
 
 exports.getCom = (req, res, next) => {

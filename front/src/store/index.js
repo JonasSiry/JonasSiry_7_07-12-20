@@ -14,7 +14,7 @@ export default new Vuex.Store({
     getters,
     plugins: [
         createPersistedState({
-            paths: ['token', 'user']
+            paths: ['token', 'user','posts']
         })
     ]
 })
