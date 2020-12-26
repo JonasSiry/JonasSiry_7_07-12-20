@@ -47,7 +47,7 @@ exports.login = (req, res, next) => {
                                 admin: user.admin
                             },
                             process.env.APP_SECRET,
-                            { expiresIn: "10s" }
+                            { expiresIn: "24h" }
                         )
                     })
                 })
