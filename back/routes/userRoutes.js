@@ -12,5 +12,7 @@ router.put("/:id", auth, userCtrl.logUpdate)
 
 router.delete("/:id", auth, userCtrl.logDelete)
 
+router.get("/", auth, userCtrl.isAuth)
+
 
 module.exports = router

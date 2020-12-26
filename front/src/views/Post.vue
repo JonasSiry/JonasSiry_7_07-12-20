@@ -25,11 +25,12 @@ export default {
   methods: {
     ...mapActions(["fetchPost"]),
   },
+  beforeRouteUpdate(_to, _from, next) {
+    this.fetchPost(this.id).catch(() => this.router.push("/Home"));
+    next();
+  },
   created() {
     this.fetchPost(this.id).catch(() => this.router.push("/Home"));
   },
 };
 </script>
-
-<style lang="scss">
-</style>

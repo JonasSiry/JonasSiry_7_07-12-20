@@ -76,3 +76,7 @@ exports.logDelete = (req, res, next) => {
             .catch(() => res.status(400).json({ message: "Oops ! Une erreur est survenue !" })))
         .catch(() => res.status(500).json({ message: "Oops ! Une erreur est survenue !" }))
 }
+
+exports.isAuth = (req, res, next) => {
+    res.status(200).json({ message: "yes" })
+}

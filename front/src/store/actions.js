@@ -5,6 +5,14 @@ export default {
     signup(_, form) {
         return HTTP.post('/api/auth/signup', form)
     },
+    checkIfStillLoggedIn({ commit }) {
+        HTTP.get('/api/auth/')
+            .catch(() => {
+                commit('SET_USER', null);
+                commit('SET_TOKEN', null);
+                router.push({ path: '/login', query: { timeOut: true } })
+            })
+    },
     loginUser({ commit, dispatch }, form) {
         return HTTP.post('/api/auth/login', form)
             .then((response) => {
@@ -22,9 +30,9 @@ export default {
             })
     },
     logoutUser({ commit }) {
-        commit('SET_USER', null)
-        commit('SET_TOKEN', null)
-        router.push('login')
+        commit('RESET_STORE')
+        delete HTTP.defaults.headers.common['Authorization']
+        router.push('/login')
     },
     setHeader({ state, getters }) {
         if (getters.loggedIn) {
@@ -41,22 +49,43 @@ export default {
             }
         })
     },
-    fetchPosts({ commit }, limit = 10) {
-        HTTP.get("/api/post", { limit })
+    fetchPosts({ commit }, offset = 0) {
+        HTTP.get("/api/post", { params: { limit: 5, offset } })
             .then((response) => {
                 commit("SET_POSTS", response.data.posts)
-                if (response.data.posts.length > 0) {
-                    document.getElementById("empty").remove()
-                }
+                commit("SET_POSTS_COUNT", response.data.count)
             })
             .catch(e => e)
     },
     fetchPost({ commit }, id) {
         HTTP.get("/api/post/" + id)
             .then((response) => {
-                console.log(response.data)
                 commit("PUSH_POST", response.data.post)
             })
             .catch(e => e)
     },
+    deletePost({ commit }, post) {
+        HTTP.delete("/api/post/" + post.id)
+            .then(() => {
+                commit("DELETE_POST", post)
+                router.push('/home')
+            })
+            .catch(e => {
+                console.log(e)
+                return e
+            })
+    },
+    editPost({ dispatch }, { id, form }) {
+        return HTTP.put("/api/post/" + id, form).then(() => dispatch('fetchPost', this.id))
+    },
+    createComment(_, comment) {
+        return HTTP.post("/api/com/", comment)
+    },
+    updateComment(_, comment) {
+        return HTTP.put("/api/com/" + comment.id, comment)
+    },
+    deleteComment({ commit }, { comment, post }) {
+        return HTTP.delete("/api/com/" + comment.id)
+            .then(() => commit("DELETE_COMMENT", { commentId: comment.id, post }))
+    }
 }

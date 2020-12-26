@@ -1,5 +1,16 @@
 const fs = require("fs")
-const { Post } = require("../db")
+const { Post, User, Com } = require("../db")
+
+const userInclude = {
+    model: User,
+    attributes: ['firstName', 'lastName', 'email', 'id']
+}
+const comInclude = {
+    model: Com,
+    as: 'Coms',
+    attributes: ['text', 'createdAt', 'updatedAt', 'id'],
+    include: [{ ...userInclude }], // clone pour ne pas linker l'élément
+}
 
 exports.createPost = (req, res, next) => {
     let postObject = req.body
@@ -18,6 +29,8 @@ exports.createPost = (req, res, next) => {
 exports.modifyPost = (req, res, next) => {
     Post.findByPk(req.params.id)
         .then((postToUpdate) => {
+            if (req.locals.userId != postToUpdate.UserId)
+                return res.status(401).json({ message: "Non non petit hacker !" })
             if (req.file) {
                 fs.unlinkSync(`images/${postToUpdate.imageUrl}`)
                 postToUpdate["imageUrl"] = req.file.filename
@@ -33,6 +46,8 @@ exports.modifyPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
     Post.findByPk(req.params.id)
         .then(post => {
+            if (req.locals.userId != post.UserId)
+                return res.status(401).json({ message: "Non non petit hacker !" })
             fs.unlink(`images/${post.imageUrl}`, () => {
                 Post.destroy({
                     where: {
@@ -47,13 +62,19 @@ exports.deletePost = (req, res, next) => {
 }
 
 exports.getOnePost = (req, res, next) => {
-    Post.findByPk(req.params.id)
-        .then(post => res.status(200).json({post}))
-        .catch(() => res.status(404).json({ message: "Oops ! Une erreur est survenue !" }))
+    Post.findByPk(req.params.id, { include: [userInclude, comInclude], order: [['Coms', 'createdAt', 'ASC']] })
+        .then(post => res.status(200).json({ post }))
+        .catch((e) => res.status(404).json({ message: e }))
 }
 
 exports.getPost = (req, res, next) => {
-    Post.findAll({ limit: req.params.limit })
-        .then(posts => res.status(200).json({posts}))
-        .catch(() => res.status(400).json({ message: "Oops ! Une erreur est survenue !" }))
+    let offset = req.query.offset ? parseInt(req.query.offset) : 0;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 5;
+    Post.count().then((count) => {
+        Post.findAll({ limit, offset, include: [userInclude, comInclude], order: [['Coms', 'createdAt', 'ASC']], })
+            .then(posts => res.status(200).json({ posts, count }))
+    })
+        .catch((e) => {
+            res.status(400).json({ message: "Oops ! Une erreur est survenue !" })
+        })
 }

@@ -19,11 +19,39 @@ export default {
         state.token = token
     },
     SET_POSTS: (state, posts) => {
-        if (posts)
-            Vue.set(state, "posts", posts)
+        posts.forEach(postToPush => {
+            let postAlreadyInStore = state.posts.find(post => post.id === postToPush.id)
+            if (!postAlreadyInStore)
+                state.posts.push(postToPush)
+            else {
+                Vue.set(state.posts, state.posts.indexOf(postAlreadyInStore), postToPush)
+            }
+        });
+    },
+    SET_POSTS_COUNT: (state, count) => {
+        state.postsCount = count
     },
     PUSH_POST: (state, postToPush) => {
-        if (!state.posts.find(post => post.id === postToPush.id))
+        let postAlreadyInStore = state.posts.find(post => post.id === postToPush.id)
+        if (!postAlreadyInStore)
             state.posts.push(postToPush)
+        else {
+            Vue.set(state.posts, state.posts.indexOf(postAlreadyInStore), postToPush)
+        }
     },
+    DELETE_POST: (state, postToDelete) => {
+        Vue.delete(state.posts, state.posts.indexOf(postToDelete))
+    },
+    DELETE_COMMENT: (_, { commentId, post }) => {
+        let comToDelete = post.Coms.find(com => (commentId == com.id))
+        if (comToDelete) {
+            Vue.delete(post.Coms, post.Coms.indexOf(comToDelete))
+        }
+    },
+    RESET_STORE: (state) => {
+        state.postsCount = 0
+        state.posts = []
+        state.token = null
+        state.user = null 
+    }
 }

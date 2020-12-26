@@ -34,7 +34,14 @@ export default {
     },
     loggedIn: (state) => (!!state.token),
     getImageUrl: () => (imageUrl) => {
-        return HTTP.defaults.baseURL + "static/" +imageUrl;
+        return HTTP.defaults.baseURL + "static/" + imageUrl;
     },
-    getPostById: (state) => (id) => state.posts.find(post => post.id === id)
+    getPostById: (state) => (id) => state.posts.find(post => post.id === id),
+    prettyTime: () => (time) => {
+        if (!time) return ""
+        let timesplit = time.split("T");
+        let date = timesplit[0].split("-").reverse().join("-")
+        let hour = timesplit[1].split(".")[0]
+        return date + " à " + hour
+    },
 }

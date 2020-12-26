@@ -17,17 +17,12 @@
 
       <div class="form">
         <label>Description</label>
-        <textarea id="description" v-model="description"
+        <textarea class="description" v-model="description"
         placeholder="Description" name="Description" required: true/>
       </div>
 
-      <div class="form">
-        <input type="file" name="file" id="file" @change="updateFile" />
-        <label for="file">{{ imageLabel }}</label>
-        <span id="cross" v-if="file"
-          ><font-awesome-icon icon="times-circle" @click="deleteFile"
-        /></span>
-      </div>
+      <buttonUploadFile v-model="file" />
+
       <div class="submit">
         <button type="button" id="submit" @click="uploadPost">Poster</button>
       </div>
@@ -37,11 +32,13 @@
 
 <script>
 import { mapActions } from "vuex";
+import buttonUploadFile from "@/components/buttonUploadFile.vue";
 import Home from "@/components/Home_Post.vue";
 export default {
   name: "PostCreate",
   components: {
     Home,
+    buttonUploadFile,
   },
   data: function () {
     return {
@@ -53,17 +50,6 @@ export default {
     };
   },
   methods: {
-    updateFile(e) {
-      if (!e.target.files.length) {
-        return;
-      }
-      this.file = e.target.files[0];
-      this.imageLabel = this.file.name;
-    },
-    deleteFile() {
-      this.file = null;
-      this.imageLabel = "Choisissez une image";
-    },
     uploadPost() {
       var formData = new FormData();
       formData.append("image", this.file);
@@ -86,25 +72,6 @@ export default {
 $colormain: #05387a;
 
 #form {
-  & #file {
-    position: absolute;
-    z-index: -1;
-  }
-  & #file + label {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    background-color: lighten($colormain, 40%);
-    padding: 1rem;
-    border-radius: 50px;
-    cursor: pointer;
-  }
-
-  &#file:focus + label,
-  #file + label:hover {
-    background-color: lighten($colormain, 20%);
-  }
-
   & #title {
     font-size: 1.3rem;
     width: 20rem;
@@ -114,7 +81,7 @@ $colormain: #05387a;
       outline: none;
     }
   }
-  & #description {
+  & .description {
     font-size: 1.3rem;
     width: 20rem;
     height: 10rem;
@@ -129,6 +96,6 @@ $colormain: #05387a;
   color: rgb(177, 21, 21);
   font-size: 2rem;
   cursor: pointer;
-  margin-top:0.2rem;
+  margin-top: 0.2rem;
 }
 </style>

@@ -1,6 +1,6 @@
 module.exports = (db, type) => {
     return db.define('Com', {
-    comment: {
+      text: {
       type: type.TEXT,
       allowNull: false,
     },

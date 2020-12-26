@@ -4,9 +4,9 @@ import store from '@/store'
 import router from '@/router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTimesCircle, faTrash, faEdit, faSave, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faTimesCircle)
+library.add(faTimesCircle, faTrash, faEdit, faSave, faPlusCircle)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
@@ -26,6 +26,7 @@ new Vue({
         }
       } else {
         if (this.$store.getters.loggedIn) {
+          this.$store.dispatch('checkIfStillLoggedIn')
           next({ path: '/home' })
         } else {
           next()

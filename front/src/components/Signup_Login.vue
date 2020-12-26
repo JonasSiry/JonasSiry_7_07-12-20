@@ -37,4 +37,14 @@ $colormain: #05387a;
     }
   }
 }
+
+@media (max-width: 768px) {
+  #nav {
+    display:flex;
+    flex-direction:column;
+    &nth:child(1) {
+      margin-bottom:1rem;
+    }
+  }
+}
 </style>

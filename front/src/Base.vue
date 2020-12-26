@@ -28,10 +28,6 @@ body {
   border: 0;
   margin: 0;
   padding: 0;
-  & img {
-    max-width: 25vw;
-    max-height: 10vw;
-  }
   & #app {
     letter-spacing: 1px;
     font-family: "Roboto", Helvetica, Arial, sans-serif;
@@ -61,6 +57,17 @@ body {
         padding-bottom: 2rem;
         font-size: 2rem;
         font-weight: 500;
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  body {
+    & #app {
+      & #grouplogo {
+        & img {
+          width: 80%;
+        }
       }
     }
   }

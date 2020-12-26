@@ -21,12 +21,6 @@ app.use(bodyParser.json())
 
 app.use('/static', express.static('images'));
 
-app.use((req, _, next) => {
-    console.log(req.path)
-    console.log(req.body)
-    next();
-});
-
 app.use("/images", express.static(path.join(__dirname, "images")))
 
 app.use("/api/auth", userRoutes)

@@ -4,7 +4,10 @@
     <div v-else>
       <Signup />
       <form name="form" id="form" @submit.prevent="loginUser" novalidate>
-        <div class="errorid">{{ loginError }}</div>
+        <div class="errorid">
+          <span v-if="this.$route.query.timeOut">Votre session a expiré</span>
+          {{ loginError }}
+        </div>
         <div class="form" v-for="input in inputs" :key="input.id">
           <label>{{ input.name }}</label>
           <span class="error">{{ input.error }}</span>
@@ -84,6 +87,6 @@ export default {
   color: rgb(177, 21, 21);
   font-weight: bold;
   font-size: 1.5rem;
-  margin-bottom:1rem;
+  margin-bottom: 1rem;
 }
 </style>

@@ -22,8 +22,14 @@ const User = UserModel(sequelize, Sequelize)
 const Post = PostModel(sequelize, Sequelize)
 const Com = ComModel(sequelize, Sequelize)
 Com.belongsTo(User)
-Post.belongsTo(User)
-
+Com.belongsTo(Post, {
+    onDelete: 'CASCADE'
+})
+Post.hasMany(Com, { as: 'Coms' })
+Post.belongsTo(User, {
+    onDelete: 'CASCADE'
+})
+User.hasMany(Post)
 
 sequelize.sync()
     .then(async () => {

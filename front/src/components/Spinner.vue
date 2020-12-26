@@ -21,7 +21,7 @@ $colormain: #05387a;
   width: 100px;
   height: 100px;
   position: relative;
-  left: 50%;
+  left: 42%;
   animation: sk-chase 2.5s infinite linear both;
   margin-bottom: 3rem;
 }
