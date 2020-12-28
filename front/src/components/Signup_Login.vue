@@ -1,3 +1,5 @@
+// Les menus de navigation sur les pages signup et login.
+
 <template>
   <div id="signuplogin">
     <div id="nav">

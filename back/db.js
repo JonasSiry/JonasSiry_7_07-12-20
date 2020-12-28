@@ -1,3 +1,6 @@
+// Création de la database avec sequelize, des relations entre les tables,
+// et création de l'utilisateur admin tout puissant
+
 const { Sequelize } = require('sequelize')
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
@@ -21,7 +24,9 @@ const ComModel = require("./models/com")
 const User = UserModel(sequelize, Sequelize)
 const Post = PostModel(sequelize, Sequelize)
 const Com = ComModel(sequelize, Sequelize)
-Com.belongsTo(User)
+Com.belongsTo(User, {
+    onDelete: 'CASCADE'
+})
 Com.belongsTo(Post, {
     onDelete: 'CASCADE'
 })

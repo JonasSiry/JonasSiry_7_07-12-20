@@ -1,3 +1,5 @@
+// La page de gestion de profil.
+
 <template>
   <div id="profilpage">
     <div id="headerhome">
@@ -7,8 +9,8 @@
     <div id="userdata">
       <form name="form" id="form" novalidate>
         <p>Mettre à jour son compte</p>
-        <span v-if="changed">Compte mis &agrave; jour</span>
-        <span v-else-if="error">{{ error }}</span>
+        <span id="accountupdated" v-if="changed">Compte mis à jour !</span>
+        <span id="errorprofil" v-else-if="error">{{ error }}</span>
         <div class="form" v-for="input in inputs" :key="input.id">
           <label>{{ input.name }}</label>
           <span class="error">{{ input.error }}</span>
@@ -97,7 +99,7 @@ export default {
       });
     },
     updateUser() {
-      let check = this.checkError(this.inputs, false);
+      let check = this.checkError(this.inputs, (this.inputs[3].value.length > 0));
       this.changed = false;
       this.error = "";
 
@@ -164,6 +166,20 @@ $colormain: #05387a;
   margin-top: 10rem;
   cursor: pointer;
   margin-bottom: 2rem;
+}
+
+#accountupdated {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: $colormain;
+}
+
+#errorprofil {
+  color: rgb(177, 21, 21);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 768px) {

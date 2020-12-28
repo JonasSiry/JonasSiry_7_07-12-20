@@ -1,3 +1,5 @@
+// La page d'inscription.
+
 <template>
   <div class="data">
     <div v-if="sending"><Spinner /></div>

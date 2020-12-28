@@ -1,10 +1,13 @@
+// Ici on a les mutations, que les actions vont commit pour changer l'état du state.
+// Elles sont toutes en relation avec des actions et ont des noms plutôt explicites.
+
 import Vue from 'vue'
 
 const emptyUser = {
     email: "",
     firstName: "",
     lastName: "",
-    admin:false
+    admin: false
 }
 
 export default {
@@ -43,7 +46,7 @@ export default {
     DELETE_POST: (state, postToDelete) => {
         Vue.delete(state.posts, state.posts.indexOf(postToDelete))
     },
-    DELETE_COMMENT: (_, { commentId, post }) => {
+    DELETE_COMMENT: (_context, { commentId, post }) => {
         let comToDelete = post.Coms.find(com => (commentId == com.id))
         if (comToDelete) {
             Vue.delete(post.Coms, post.Coms.indexOf(comToDelete))
@@ -53,6 +56,6 @@ export default {
         state.postsCount = 0
         state.posts = []
         state.token = null
-        state.user = null 
+        state.user = null
     }
 }

@@ -1,8 +1,13 @@
+// Ici on a toutes les actions, qui sont là pour mettre à jour notre state
+// et/ou commit des mutations qui vont le faire.
+// Elles s'occupent de gérer users, posts et coms.
+// Parfois on se sert d'un getter pour chercher une information spécifique
+
 import { HTTP } from '@/httpconstant'
 import router from '@/router/index'
 
 export default {
-    signup(_, form) {
+    signup(_context, form) {
         return HTTP.post('/api/auth/signup', form)
     },
     checkIfStillLoggedIn({ commit }) {
@@ -39,10 +44,10 @@ export default {
             HTTP.defaults.headers.common['Authorization'] = `Bearer ${state.token}`
         }
     },
-    editUser(_, { form, id, edit }) {
+    editUser(_context, { form, id, edit }) {
         return HTTP[edit]('api/auth/' + id, form)
     },
-    createPost(_, form) {
+    createPost(_context, form) {
         return HTTP.post("/api/post", form, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -60,9 +65,10 @@ export default {
     fetchPost({ commit }, id) {
         HTTP.get("/api/post/" + id)
             .then((response) => {
-                commit("PUSH_POST", response.data.post)
+                if (response.data.post) {
+                    commit("PUSH_POST", response.data.post)
+                }
             })
-            .catch(e => e)
     },
     deletePost({ commit }, post) {
         HTTP.delete("/api/post/" + post.id)
@@ -78,10 +84,10 @@ export default {
     editPost({ dispatch }, { id, form }) {
         return HTTP.put("/api/post/" + id, form).then(() => dispatch('fetchPost', this.id))
     },
-    createComment(_, comment) {
+    createComment(_context, comment) {
         return HTTP.post("/api/com/", comment)
     },
-    updateComment(_, comment) {
+    updateComment(_context, comment) {
         return HTTP.put("/api/com/" + comment.id, comment)
     },
     deleteComment({ commit }, { comment, post }) {

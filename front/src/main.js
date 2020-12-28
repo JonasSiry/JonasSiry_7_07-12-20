@@ -1,5 +1,8 @@
+// Ici on importe toutes les fonctions globales dont on va se servir dans l'application,
+// on crée une nouvelle instance Vue, et on utilise la fonction d'authentification qui gère les redirections en fonction du statut logged/not
+
 import Vue from 'vue'
-import App from './Base.vue'
+import App from './App.vue'
 import store from '@/store'
 import router from '@/router'
 import { library } from '@fortawesome/fontawesome-svg-core'

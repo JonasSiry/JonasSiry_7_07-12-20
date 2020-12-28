@@ -1,3 +1,5 @@
+// Le component qui s'occupe de gérer les commentaires.
+
 <template>
   <div class="comment">
     <div class="title">
@@ -37,9 +39,9 @@
     <div id="errorpost" v-if="error">{{ error }}</div>
     <popupSuppression
       :id="'comment' + comment.id"
-      :question="'Supprimer mon commentaire ?'"
+      :question="'Supprimer ce commentaire ?'"
       :infirmation="'Non j\'ai changé d\'avis'"
-      :confirmation="'Oui supprimer mon commentaire'"
+      :confirmation="'Oui supprimer ce commentaire'"
       :action="trashComment"
       :show="popup"
       @close="popup = false"

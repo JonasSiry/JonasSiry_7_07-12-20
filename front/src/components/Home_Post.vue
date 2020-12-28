@@ -1,3 +1,5 @@
+// Les menus de navigation sur les pages home/post/postid, etc...
+
 <template>
   <div id="signuplogin">
     <div id="headerhome">

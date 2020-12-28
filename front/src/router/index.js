@@ -1,3 +1,8 @@
+// Ici on a les routes pour toutes nos views avec le requiresAuth sur chacune,
+// on a une route all tout en bas si l'utilisateur tape n'importe quoi,
+// qui redirige automatiquement vers Signup. Enfin on a la route des posts qui va parser l'id de ceux-ci,
+// et retourner le post correspondant.
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Signup from '../views/Signup.vue'
@@ -13,7 +18,7 @@ const routes = [
   },
   {
     meta: { requiresAuth: true },
-    path: '/Home',
+    path: '/home',
     name: 'Home',
     component: () => import('../views/Home.vue')
   },
@@ -27,12 +32,9 @@ const routes = [
     meta: { requiresAuth: true },
     props: (route) => {
       const id = Number.parseInt(route.params.id, 10)
-      if (Number.isNaN(id)) {
-        return 0
-      }
       return { id }
     },
-    path: '/post/:id', component: () => import('../views/Post.vue'),
+    path: '/post/:id(\\d+)', component: () => import('../views/Post.vue'),
     children: [
       {
         path: 'edit',
@@ -60,7 +62,7 @@ const routes = [
     meta: { requiresAuth: false },
     path: '*',
     redirect: { name: 'Signup' }
-  }
+  },
 ]
 
 const router = new VueRouter({

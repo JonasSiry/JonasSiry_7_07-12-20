@@ -1,3 +1,5 @@
+// Plugin responsable de la gestion/stockage des images dans le dossier /images
+
 const multer = require("multer")
 const { v4: uuidv4 } = require('uuid')
 

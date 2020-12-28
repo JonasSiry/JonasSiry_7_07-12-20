@@ -1,7 +1,9 @@
+// La page qui réunit viewpost et editpost.
+
 <template>
   <div class="home">
     <Home />
-    <router-view :post="post"></router-view>
+    <router-view :post="post" v-if="post"></router-view>
   </div>
 </template>
 
@@ -9,7 +11,7 @@
 import { mapActions, mapGetters } from "vuex";
 import Home from "@/components/Home_Post.vue";
 export default {
-  name: "PostCreate",
+  name: "Post",
   components: {
     Home,
   },
@@ -19,18 +21,23 @@ export default {
   computed: {
     ...mapGetters(["getPostById"]),
     post: function () {
-      return this.getPostById(this.id) ?? {};
+      return this.getPostById(this.id);
     },
   },
   methods: {
     ...mapActions(["fetchPost"]),
   },
-  beforeRouteUpdate(_to, _from, next) {
-    this.fetchPost(this.id).catch(() => this.router.push("/Home"));
-    next();
+  watch: {
+    id: function (newId, oldId) {
+      this.fetchPost(newId).then(() => {
+        if (!this.post) this.$router.push("/post/" + oldId);
+      }); // Pour la navigation normale
+    },
   },
   created() {
-    this.fetchPost(this.id).catch(() => this.router.push("/Home"));
+    this.fetchPost(this.id).then(() => {
+      if (!this.post) this.$router.push("/home");
+    }); // Pour f5
   },
 };
 </script>

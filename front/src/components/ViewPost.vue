@@ -1,10 +1,16 @@
+// Le component qui display les posts par id.
+// Récupère également le viewcomment component.
+
 <template>
   <div class="viewpost">
     <div class="getposts">
       <div class="post">
         <div class="title">
           <span class="text">{{ post.title }}</span>
-          <span class="actions" v-if="post.UserId === user.id || user.admin == true">
+          <span
+            class="actions"
+            v-if="post.UserId === user.id || user.admin == true"
+          >
             <router-link :to="'/post/' + post.id + '/edit'">
               <font-awesome-icon class="editpost" icon="edit" />
             </router-link>
@@ -29,27 +35,27 @@
         </div>
       </div>
     </div>
-      <form name="form" id="form" novalidate>
-        <span id="errorcom" v-if="error">{{ error }}</span>
-        <div class="form">
-          <label>Votre commentaire</label>
-          <textarea class="commentaire" v-model="comment" placeholder="Votre commentaire" name="commentaire" required: true/>
-        </div>
+    <form name="form" id="form" novalidate>
+      <span id="errorcom" v-if="error">{{ error }}</span>
+      <div class="form">
+        <label>Votre commentaire</label>
+        <textarea class="commentaire" v-model="comment" placeholder="Votre commentaire" name="commentaire" required: true/>
+      </div>
 
-        <div class="submit">
-          <button type="button" id="submit" @click="postComment">
-            Commenter
-          </button>
-        </div>
-      </form>
+      <div class="submit">
+        <button type="button" id="submit" @click="postComment">
+          Commenter
+        </button>
+      </div>
+    </form>
     <div v-for="com in post.Coms" :key="com.id">
       <ViewComment id="coms" :comment="com" :post="post" />
     </div>
     <popupSuppression
-      :question="'Supprimer mon Post ?'"
+      :question="'Supprimer ce Post ?'"
       :show="popup"
       :infirmation="'Non j\'ai changé d\'avis'"
-      :confirmation="'Supprimer mon post'"
+      :confirmation="'Supprimer ce post'"
       :action="() => deletePost(post)"
       @close="popup = false"
     />
@@ -120,6 +126,7 @@ $colormain: #05387a;
       color: #05387a;
     }
     & .imagepost {
+      max-width: 35rem;
       border: 3px solid $colormain;
     }
     & .title {
@@ -181,7 +188,7 @@ $colormain: #05387a;
 
 @media (max-width: 768px) {
   .getposts {
-    flex-direction:row;
+    flex-direction: row;
     .post {
       width: 100%;
     }

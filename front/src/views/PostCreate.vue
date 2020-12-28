@@ -1,3 +1,5 @@
+// La page de création de posts.
+
 <template>
   <div class="home">
     <Home />
@@ -55,13 +57,17 @@ export default {
       formData.append("image", this.file);
       formData.append("title", this.title);
       formData.append("description", this.description);
-      this.createPost(formData)
-        .then(() => {
-          this.$router.push("/home");
-        })
-        .catch((e) => {
-          this.error = e.response.data.message;
-        });
+      if (this.title && this.description != "") {
+        this.createPost(formData)
+          .then(() => {
+            this.$router.push("/home");
+          })
+          .catch((e) => {
+            this.error = e.response.data.message;
+          });
+      } else {
+        this.error = "Votre post doit contenir un titre et une description !";
+      }
     },
     ...mapActions(["createPost"]),
   },
@@ -97,5 +103,12 @@ $colormain: #05387a;
   font-size: 2rem;
   cursor: pointer;
   margin-top: 0.2rem;
+}
+
+#errorpost {
+  color: rgb(177, 21, 21);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 </style>

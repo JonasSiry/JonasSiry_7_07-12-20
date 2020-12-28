@@ -1,3 +1,6 @@
+// Middleware qui vérifie si l'utilisateur est authentifié,
+// enregistre son id et son statut d'admin
+
 const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {

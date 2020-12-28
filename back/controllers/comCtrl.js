@@ -1,3 +1,9 @@
+// Catch error => habitude de brouillage pour les petits hackeurs !
+
+// Fichier responsable des fonctions en lien avec les commentaires
+
+// Vérification de l'id pour modification/deletion des coms
+
 const { Com } = require("../db")
 
 exports.createCom = (req, res, next) => {

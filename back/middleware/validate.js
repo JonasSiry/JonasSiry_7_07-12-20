@@ -1,3 +1,5 @@
+// Fonctions de protection des données d'utilisateur, valide le format correct des inputs
+
 const validator = require('../helpers/validate');
 
 const signup = (req, res, next) => {

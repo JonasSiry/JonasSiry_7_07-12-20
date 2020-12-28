@@ -1,3 +1,5 @@
+// Display la page d'édition de post si le user a les droits dessus.
+
 <template>
   <form name="form" id="form" novalidate>
     <p>Modifier le post</p>
@@ -11,7 +13,7 @@
       <label>Description</label>
       <textarea class="description" v-model="post.description" />
     </div>
-    <div class="form">
+    <div class="imgedit">
       <img
         class="imagepost"
         v-if="post.imageUrl"
@@ -50,13 +52,17 @@ export default {
       if (this.newImage) formData.append("image", this.newImage);
       formData.append("title", this.post.title);
       formData.append("description", this.post.description);
-      this.editPost({ id: this.post.id, form: formData })
-        .then(() => {
-          this.$router.push("/post/" + this.post.id);
-        })
-        .catch((e) => {
-          this.error = e.response.data.message;
-        });
+      if (this.post.title && this.post.description != "") {
+        this.editPost({ id: this.post.id, form: formData })
+          .then(() => {
+            this.$router.push("/post/" + this.post.id);
+          })
+          .catch((e) => {
+            this.error = e.response.data.message;
+          });
+      } else {
+        this.error = "Votre post doit contenir un titre et une description !";
+      }
     },
     ...mapActions(["editPost"]),
   },
@@ -88,7 +94,13 @@ $colormain: #05387a;
     }
   }
   & .title {
-    font-size:1.5rem;
+    font-size: 1.5rem;
+  }
+  & .error {
+    color: rgb(177, 21, 21);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
   }
 }
 </style>

@@ -1,3 +1,6 @@
+// La page principale qui est relié au fichier html via main.js, normalement elle s'appelle app,
+// mais j'étais jeune alors je l'ai rename.
+
 <template>
   <div id="app">
     <div id="grouplogo">
@@ -7,7 +10,7 @@
       <router-view></router-view>
     </div>
     <footer>
-      <h2>Le réseau social Groupomania !</h2>
+      <h1>Le réseau social Groupomania !</h1>
     </footer>
   </div>
 </template>
@@ -16,7 +19,7 @@
 
 <script>
 export default {
-  name: "Base",
+  name: "App",
 };
 </script>
 
@@ -49,7 +52,7 @@ body {
     & footer {
       width: 100%;
       background: lighten($colormain, 10%);
-      & h2 {
+      & h1 {
         margin-top: 0;
         color: white;
         margin-bottom: 0;

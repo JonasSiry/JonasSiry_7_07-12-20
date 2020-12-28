@@ -1,3 +1,9 @@
+// Fichier responsable des fonctions en lien avec les posts
+
+// Vérification de l'id pour modification/deletion des posts
+
+// Création de variables pour les récupérer plus facilement dans vuex
+
 const fs = require("fs")
 const { Post, User, Com } = require("../db")
 
@@ -71,7 +77,7 @@ exports.getPost = (req, res, next) => {
     let offset = req.query.offset ? parseInt(req.query.offset) : 0;
     let limit = req.query.limit ? parseInt(req.query.limit) : 5;
     Post.count().then((count) => {
-        Post.findAll({ limit, offset })
+        Post.findAll({ limit, offset, include: [userInclude], order: [['createdAt', 'DESC']] })
             .then(posts => res.status(200).json({ posts, count }))
     })
         .catch((e) => {

@@ -1,3 +1,5 @@
+// Le component qui gère la fenêtre popup de suppression oui/non.
+
 <template>
   <div :id="'popup' + id" v-show="show" :class="[show ? 'overlay' : '']">
     <div class="popup">

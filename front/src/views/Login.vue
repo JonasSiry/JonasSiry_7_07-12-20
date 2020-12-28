@@ -1,3 +1,5 @@
+// La page de connexion.
+
 <template>
   <div class="data">
     <div v-if="sending"><Spinner /></div>
@@ -5,7 +7,7 @@
       <Signup />
       <form name="form" id="form" @submit.prevent="loginUser" novalidate>
         <div class="errorid">
-          <span v-if="this.$route.query.timeOut">Votre session a expiré</span>
+          <span v-if="this.$route.query.timeOut">Votre session a expiré !</span>
           {{ loginError }}
         </div>
         <div class="form" v-for="input in inputs" :key="input.id">

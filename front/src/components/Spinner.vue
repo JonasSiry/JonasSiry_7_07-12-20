@@ -1,3 +1,5 @@
+// Un component pour avoir un fake spinner à la connexion, juste pour le plaisir
+
 <template>
   <div class="sk-chase">
     <div class="sk-chase-dot"></div>

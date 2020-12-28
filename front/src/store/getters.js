@@ -1,3 +1,6 @@
+// Ici on a les getters, qui vont chercher une information spécifique,
+// et créent une fonction que l'on peut aller chercher de n'importe où
+
 import { HTTP } from '@/httpconstant'
 
 export default {

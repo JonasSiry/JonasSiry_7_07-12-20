@@ -1,3 +1,5 @@
+// La page principale.
+
 <template>
   <div class="home">
     <Home />
@@ -16,11 +18,16 @@
             <div class="desc">
               {{ shortDescription(post.description) }}
             </div>
+            <div class="signature">
+              Crée par {{ authorName(post.User) }} le
+              {{ prettyTime(post.createdAt) }}
+            </div>
           </router-link>
         </div>
       </div>
-      <div>
+      <div id="plusposts">
         <font-awesome-icon
+          id="icon"
           v-if="posts.length < postsCount"
           @click="fetchPosts(posts.length)"
           icon="plus-circle"
@@ -46,18 +53,18 @@ export default {
     ...mapActions(["fetchPosts"]),
   },
   computed: {
-    ...mapState(["posts", "postsCount"]),
-    ...mapGetters(["getImageUrl"]),
+    ...mapState(["posts", "postsCount", "user"]),
+    ...mapGetters(["getImageUrl", "prettyTime"]),
     shortDescription: () => (description) => {
       return description.length > 200
-        ? description.slice(0, 200) + "..."
+        ? description.slice(0, 199) + "..."
         : description;
     },
+    authorName: () => (user) =>
+      user ? user.firstName + " " + user.lastName : "Inconnu",
   },
-  async created() {
-    let page = parseInt(this.$route.query.page);
-    let offset = page ? (page - 1) * 5 : 0;
-    this.fetchPosts(offset);
+  created() {
+    this.fetchPosts();
   },
 };
 </script>
@@ -82,6 +89,7 @@ $colormain: #05387a;
       color: #05387a;
     }
     & .imagepost {
+      max-width:35rem;
       border: 3px solid $colormain;
     }
     & .title {
@@ -101,6 +109,16 @@ $colormain: #05387a;
   }
 }
 
+#plusposts {
+  & #icon {
+    font-size: 2rem;
+    color: $colormain;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
+
 .empty {
   font-size: 2rem;
   color: $colormain;
@@ -109,9 +127,10 @@ $colormain: #05387a;
 
 @media (max-width: 768px) {
   .getposts {
-    flex-direction:row;
-  .post {
-    width:100%;
-  }}
+    flex-direction: row;
+    .post {
+      width: 100%;
+    }
+  }
 }
 </style>

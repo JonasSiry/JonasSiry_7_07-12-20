@@ -1,3 +1,5 @@
+// Ce component s'occupe de designer les boutons d'upload/deletion de file pour un joli résultat !
+
 <template>
   <div id="form">
     <input
